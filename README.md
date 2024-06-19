@@ -3,10 +3,12 @@
 本项目参考了 [docker_image_pusher](https://github.com/tech-shrimp/docker_image_pusher) 项目，感谢原作者的贡献。
 
 在原项目的基础上，本项目主要增加了以下功能以提高使用体验：
-- 快速得到转存镜像地址：
+- [x] 快速得到转存镜像地址：
   - 改造了原项目维护`images.txt`文件处理镜像地址的存储，若其他用户不`fork`本项目并配置相应的`secrets`，就需要通过`pr`的方式提交镜像地址，`pr`还需要原作者合并后才能触发转存
   - 本项目改为通过`issue comment`触发`docker`镜像的传输及转存，用户只需要在`issue`中提交镜像地址即可触发转存并得到转存后的镜像地址
   - 转存后的镜像地址会自动通过`issue comment`回复给用户
+
+- [ ] TODO
   
 ## 说明
 
