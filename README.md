@@ -72,7 +72,7 @@
 
 如果觉得本项目对您有帮助，可以`star`本项目
 
-如果有问题或建议，可以通过我的[E-mail](mailto:ssgeek@hotmail.com)联系我
+如果有问题或建议，可以通过新的`issue`留言，或者通过[E-mail](mailto:ssgeek@hotmail.com)联系我
 
 我的博客地址：[山山仙人博客](https://www.ssgeek.com)
 
