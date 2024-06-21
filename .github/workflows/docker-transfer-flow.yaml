@@ -70,8 +70,8 @@ jobs:
     - name: Transfer Docker Image To ACR With Issue Comment
       run: |
         image_origin_name=$(echo "${{ github.event.comment.body }}")
-        echo "Image Origin Name: image_origin_name"
-        docker pull image_origin_name
+        echo "Image Origin Name: $image_origin_name"
+        docker pull "$image_origin_name"
         
         #### 生成新的image tag
         image_name_tag=$(echo "$image" | awk -F'/' '{print $NF}')
