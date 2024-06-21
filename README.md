@@ -23,13 +23,13 @@
 
 #### 原镜像名称说明
 
-- `docker hub`官方，docker hub上的镜像命名一般有两种格式：
-  - 一种是[Official Images](https://hub.docker.com/search?image_filter=official)，这类镜像的命名格式为<image_name>:<image_tag>，例如nginx:1.27.0-alpine
-  - 一种是非Official的Images，这类镜像的命名格式为<image_ns>/<image_name>:<image_tag>，例如rancher/rancher-agent:v2.9-head
-  - 特殊情况：docker.io是docker hub的默认域名，在使用时可以添加也可以忽略，例如docker.io/nginx:1.27.0-alpine和nginx:1.27.0-alpine是等效的
+- `docker hub`官方，`docker hub`上的镜像命名一般有两种格式：
+  - 一种是[Official Images](https://hub.docker.com/search?image_filter=official)，这类镜像的命名格式为`<image_name>:<image_tag>`，例如`nginx:1.27.0-alpine`
+  - 一种是非`Official`的`Images`，这类镜像的命名格式为`<image_ns>/<image_name>:<image_tag>`，例如`rancher/rancher-agent:v2.9-head`
+  - 特殊情况：`docker.io`是`docker hub`的默认域名，在使用时可以添加也可以忽略，例如`docker.io/nginx:1.27.0-alpine`和`nginx:1.27.0-alpine`是等效的
 - 第三方其他镜像
-  - 第三方的镜像命名格式一般为：<domain>/<image_ns>/<image_name>:<image_tag>，例如：registry.k8s.io/sig-storage/livenessprobe:v2.11.0
-  也可能出现多级namespace，例如<domain>/<image_ns1>/<image_ns2>/<image_name>:<image_tag>
+  - 第三方的镜像命名格式一般为`<domain>/<image_ns>/<image_name>:<image_tag>`，例如`registry.k8s.io/sig-storage/livenessprobe:v2.11.0`
+  也可能出现多级`namespace`，例如`<domain>/<image_ns1>/<image_ns2>/<image_name>:<image_tag>`
 
 #### 转存镜像命名规范
 
