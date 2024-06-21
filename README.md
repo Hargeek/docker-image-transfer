@@ -15,9 +15,20 @@
 - `issue`中提交的镜像地址必须是公开的，否则无法下载
 - 本项目仅用于传输镜像，不提供存储服务，转存后的镜像地址有效期为`30`天
 - 由于`acr`个人版本的限制：全球地域下仓库默认限额为`300`，因此`30`天内的转存镜像数量有限
-- 本项目不提供任何保证，如有问题请提交其他`issue`
 - 转存后的镜像地址会自动通过`issue comment`回复给用户
 - 所有转存后的镜像地址会自动更新到[images.txt](images.txt)文件中，方便用户统一查看，如果不需要转存镜像，可以从此文件中查看现存的所有镜像地址列表
+- 本项目不提供任何保证，如有问题请提交其他`issue`
+
+### 转存镜像命名规范
+
+由于`acr`只支持一级镜像名称的`namespace`，因此转存镜像的命名规范为：
+
+- 镜像来源是`docker hub`，则转存后的镜像名称为`image:tag`，自动忽略原镜像地址中的`docker.io/`前缀
+  - 例如：`nginx:latest` 转存后的镜像名称为 `nginx:latest`
+  - 例如：`docker.io/library/nginx:latest` 转存后的镜像地址为 `nginx:latest`
+- 镜像来源为其他仓库，且可能出现多级`namespace`，则转存后的镜像地址为`namespace_image:tag`，自动将原镜像地址中的`/`替换为`_`，
+  - 例如: `xxx.com/namespace/image:tag` 转存后的镜像地址为 `namespace_image:tag`
+  - 例如: `xxx.com/namespace1/namespace2/image:tag` 转存后的镜像地址为 `namespace1_namespace2_image:tag`
 
 ## TODO
 
