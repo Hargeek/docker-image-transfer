@@ -73,30 +73,27 @@ jobs:
         echo "Image Origin Name: $image_origin_name"
         
         docker pull "$image_origin_name"
-             
-        image_name_tag
         
-        image_name_tag=$(echo "$image_origin_name" | awk -F'/' '{print $NF}')
-        echo "Image Name Tag: $image_name_tag"
-        
-        # 获取命名空间 例如kasmweb  这里有种特殊情况 docker.io/nginx，把docker.io当成命名空间，也OK
-        image_name_space=$(echo "$image_origin_name" | awk -F'/' '{if (NF==3) print $2; else if (NF==2) print $1; else print ""}')
-        echo "Name Space: $image_name_space"
-        
-        # 获取镜像名例  例如nginx
-        image_name=$(echo "$image_name_tag" | awk -F':' '{print $1}')
-        name_space_prefix=""
-#        # 如果镜像名重名
-#        if [[ -n "${duplicate_images[$image_name]}" ]]; then
-#           #如果命名空间非空，将命名空间加到前缀
-#           if [[ -n "${name_space}" ]]; then
-#              name_space_prefix="${name_space}_"
-#           fi
-#        fi
-        # 将@sha256:等字符删除
+        # get image name and tag
+        image_name_tag=$(echo "$image_origin_name" | awk -F'/' '{
+            if (NF == 1) {
+              print $1;
+            } else if (NF == 2) {
+              sub(/^[^\/]*\//, "");
+              print $0;
+            } else {
+              sub(/^[^\/]*\//, "");
+              gsub(/\//, "_");
+              print $0;
+            }
+        }')
+        # delete @sha256: and other characters
         image_name_tag="${image_name_tag%%@*}"
-        new_image="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$name_space_prefix$image_name_tag"
-        docker tag $image_origin_name $ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$(echo $IMAGE_ADDRESS | awk -F '/' '{print $NF}')
+        transfer_image_name="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$image_name_tag"
+        echo "Transfer Image Name: $transfer_image_name"
+        
+
+#        docker tag $image_origin_name $ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$(echo $IMAGE_ADDRESS | awk -F '/' '{print $NF}')
 
 #    - name: Build and push image Aliyun
 #      run: |
