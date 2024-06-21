@@ -17,8 +17,11 @@ jobs:
   echo-issue:
     runs-on: ubuntu-latest
     steps:
+    - name: Install jq
+      run: sudo apt-get install jq
+
     - name: Echo Issue
-      run: echo "${{ github.event.issue }}"
+      run: echo '${{ toJson(github.event.issue) }}' | jq
 
   docker-transfer-flow:
     if: >
