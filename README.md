@@ -50,7 +50,7 @@
     - `xxx.com/namespace/image:tag` 转存后的镜像地址为 `namespace_image:tag`
     - `xxx.com/namespace1/namespace2/image:tag` 转存后的镜像地址为 `namespace1_namespace2_image:tag`
 
-### 更直观的说明
+### 表格参照
 
 如果对上述说明不太理解，可以参考以下更为直观的示例
 
