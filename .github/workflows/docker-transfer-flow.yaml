@@ -1,7 +1,7 @@
 name: Docker Transfer
 
 on:
-  workflow_dispatch:
+#  workflow_dispatch:
 #  push:
 #    branches: [master]
   issues:
@@ -69,8 +69,7 @@ jobs:
 
     - name: Transfer Docker Image To ACR With Issue Comment
       run: |
-        echo '${{ github.event.comment.body }}'
-        image_origin_name=$(echo "${{ github.event.comment.body }}" | awk '/^transfer docker image$/{flag=1; next} flag && NF{print; exit}')
+        image_origin_name=$(echo "${{ github.event.comment.body }}")
         echo "Image Origin Name: image_origin_name"
         docker pull image_origin_name
         
