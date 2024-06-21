@@ -2,7 +2,7 @@
 
 本项目参考了 [docker_image_pusher](https://github.com/tech-shrimp/docker_image_pusher) 项目，感谢原作者的贡献。
 
-在原项目的基础上，本项目主要增加/重构了以下核心功能以提高使用体验：
+在原项目的思路上，本项目主要增加/重构了以下核心功能以提高使用体验：
 
 - [x] 快速得到转存镜像地址：
     - 将内置acr相关参数中的`ALIYUN_REGISTRY`、`ALIYUN_NAME_SPACE`修改为`Variable`方式
