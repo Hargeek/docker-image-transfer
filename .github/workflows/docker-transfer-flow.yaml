@@ -77,14 +77,14 @@ jobs:
         # get image name and tag
         image_name_tag=$(echo "$image_origin_name" | awk -F'/' '{
             if (NF == 1) {
-              print $1;
+                print $1;
             } else if (NF == 2) {
-              sub(/^[^\/]*\//, "");
-              print $0;
+                sub(/^[^\/]*\//, "");
+                print $0;
             } else {
-              sub(/^[^\/]*\//, "");
-              gsub(/\//, "_");
-              print $0;
+                sub(/^[^\/]*\//, "");
+                gsub(/\//, "_");
+                print $0;
             }
         }')
         # delete @sha256: and other characters
