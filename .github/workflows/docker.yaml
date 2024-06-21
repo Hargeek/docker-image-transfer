@@ -14,7 +14,13 @@ env:
   ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
 jobs:
-  docker-transfer:
+  println:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Print Issue Comment
+      run: echo "${{ github.event.comment.body }}"
+
+  docker-transfer-flow:
     if: >
       github.event.issue.pull_request == null && 
       startsWith(github.event.comment.body, 'transfer docker image\n')
