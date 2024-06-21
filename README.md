@@ -22,9 +22,9 @@
 - 所有转存后的镜像地址会自动更新到[images.txt](images.txt)文件中，方便用户统一查看，如果不需要转存镜像，可以从此文件中查看现存的所有镜像地址列表
 - 本项目不提供任何保证，如有问题请提交您的`issue`
 
-### 镜像命名规范
+## 镜像命名规范
 
-#### 原镜像名称说明
+### 原镜像名称说明
 
 - `docker hub`官方，`docker hub`上的镜像命名一般有两种格式：
     - 一种是[Official Images](https://hub.docker.com/search?image_filter=official)
@@ -38,7 +38,7 @@
       ，例如`registry.k8s.io/sig-storage/livenessprobe:v2.11.0`
       也可能出现多级`namespace`，例如`<domain>/<image_ns1>/<image_ns2>/<image_name>:<image_tag>`
 
-#### 转存镜像命名规范
+### 转存镜像命名规范
 
 由于`acr`只支持一级镜像名称的`namespace`，因此转存镜像的命名规范为：
 
@@ -61,6 +61,12 @@
 | `registry.k8s.io/sig-storage/livenessprobe:v2.11.0` | `sig-storage_livenessprobe:v2.11.0` |
 | `xxx.com/namespace/image:tag`                       | `namespace_image:tag`               |
 | `xxx.com/namespace1/namespace2/image:tag`           | `namespace1_namespace2_image:tag`   |
+
+### Fork 本项目
+
+本项目出发点是为了方便用户快速得到转存后的镜像地址，仅仅需要在`issue`中提交镜像地址即可
+
+当然，如果想自用，也可以`fork`本项目并将项目设置为`private`，然后配置相应的`secrets`和`variable`，这样可以自己更为灵活方便的实现镜像转存
 
 ## TODO
 
