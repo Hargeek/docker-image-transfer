@@ -2,7 +2,7 @@
 
 本项目参考了 [docker_image_pusher](https://github.com/tech-shrimp/docker_image_pusher) 项目，感谢原作者的贡献。
 
-在原项目的基础上，本项目主要增加了以下功能以提高使用体验：
+在原项目的基础上，本项目主要增加/重构了以下核心功能以提高使用体验：
 - [x] 快速得到转存镜像地址：
   - 改造了原项目维护`images.txt`文件处理镜像地址的存储，若其他用户不`fork`本项目并配置相应的`secrets`，就需要通过`pr`的方式提交镜像地址，`pr`还需要原作者合并后才能触发转存
   - 本项目改为通过`issue comment`触发`docker`镜像的传输及转存，用户只需要在`issue`中提交镜像地址即可触发转存并得到转存后的镜像地址
@@ -37,7 +37,7 @@
 
 - 镜像来源是`docker hub`，则转存后的镜像名称为`image:tag`，自动忽略原镜像地址中的`docker.io/`前缀
   - `nginx:latest` 转存后的镜像名称为 `nginx:latest`
-  - `docker.io/library/nginx:latest` 转存后的镜像地址为 `nginx:latest`
+  - `docker.io/nginx:latest` 转存后的镜像地址为 `nginx:latest`
 - 镜像来源为第三方其他仓库，且可能出现多级`namespace`，则转存后的镜像地址为`namespace_image:tag`，自动将原镜像地址中的`/`替换为`_`，
   - `xxx.com/namespace/image:tag` 转存后的镜像地址为 `namespace_image:tag`
   - `xxx.com/namespace1/namespace2/image:tag` 转存后的镜像地址为 `namespace1_namespace2_image:tag`

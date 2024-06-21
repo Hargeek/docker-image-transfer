@@ -73,6 +73,8 @@ jobs:
         echo "Image Origin Name: $image_origin_name"
         
         docker pull "$image_origin_name"
+             
+        image_name_tag
         
         image_name_tag=$(echo "$image_origin_name" | awk -F'/' '{print $NF}')
         echo "Image Name Tag: $image_name_tag"
