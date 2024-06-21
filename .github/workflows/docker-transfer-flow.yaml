@@ -4,9 +4,12 @@ on:
   workflow_dispatch:
 #  push:
 #    branches: [master]
+  issues:
+    types:
+      - opened
   issue_comment:
-    types: [created]
-
+    types:
+      - created
 env:
   ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY }}"
   ALIYUN_NAME_SPACE: "${{ secrets.ALIYUN_NAME_SPACE }}"
