@@ -4,7 +4,7 @@
 
 在原项目的基础上，本项目主要增加/重构了以下核心功能以提高使用体验：
 - [x] 快速得到转存镜像地址：
-  - 将内置acr相关参数中的`ALIYUN_REGISTRY`、`ALIYUN_NAME_SPACE`修改为`Variable`方式，方便通过`action`的`console`查看
+  - 将内置acr相关参数中的`ALIYUN_REGISTRY`、`ALIYUN_NAME_SPACE`修改为`Variable`方式
   - 改造了原项目维护`images.txt`文件处理镜像地址的存储，若其他用户不`fork`本项目并配置相应的`secrets`，就需要通过`pr`的方式提交镜像地址，`pr`还需要原作者合并后才能触发转存
   - 本项目改为通过`issue comment`触发`docker`镜像的传输及转存，用户只需要在`issue`中提交镜像地址即可触发转存并得到转存后的镜像地址
   - 转存后的镜像地址会自动通过`issue comment`回复给用户
