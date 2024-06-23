@@ -99,6 +99,12 @@ jobs:
         echo "image_origin_name=${image_origin_name}" >> $GITHUB_OUTPUT
         echo "transfer_image_name=${transfer_image_name}" >> $GITHUB_OUTPUT
 
+    - name: Transfer Image With Skopeo
+      run: |
+        image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
+        transfer_image_name="${{ steps.parse_image.outputs.transfer_image_name }}"
+        echo "$ALIYUN_REGISTRY_PASSWORD" | skopeo copy --dest-creds $ALIYUN_REGISTRY_USER:$ALIYUN_REGISTRY_PASSWORD --all docker://$image_origin_name docker://$transfer_image_name
+
     - name: Retrieve Image Manifest
       id: manifest
       run: |
