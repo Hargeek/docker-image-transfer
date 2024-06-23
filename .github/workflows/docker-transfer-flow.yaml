@@ -123,13 +123,14 @@ jobs:
           docker tag $image_origin_name $transfer_image_name-$platform_suffix
         done
         docker images
-        docker manifest create $transfer_image_name $(
+        echo "docker manifest create $transfer_image_name $(
           for platform in $(echo $platforms | tr "," "\n")
           do
             platform_suffix=$(echo $platform | tr "/" "-")
             echo $transfer_image_name-$platform_suffix
           done
-        )
+        )"
+        
         docker manifest push $transfer_image_name
 
 #    - name: Build and push image Aliyun
