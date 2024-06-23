@@ -123,7 +123,7 @@ jobs:
           docker tag $image_origin_name $transfer_image_name-$platform_suffix
           docker push $transfer_image_name-$platform_suffix
         done
-        docker manifest create $transfer_image_name $(
+        docker buildx imagetools create -t $transfer_image_name $(
           for platform in $(echo $platforms | tr "," "\n")
           do
             platform_suffix=$(echo $platform | tr "/" "-")
