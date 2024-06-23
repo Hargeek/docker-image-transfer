@@ -96,8 +96,8 @@ jobs:
         
     - name: Retag And Push Image
       run: |
-        image_origin_name = ${{ steps.parse_image.outputs.image_origin_name }}
-        transfer_image_name = ${{ steps.parse_image.outputs.transfer_image_name }}
+        image_origin_name = "${{ steps.parse_image.outputs.image_origin_name }}"
+        transfer_image_name = "${{ steps.parse_image.outputs.transfer_image_name }}"
         
         docker pull "$image_origin_name"
         docker tag $image_origin_name $transfer_image_name
