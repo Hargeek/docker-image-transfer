@@ -104,7 +104,7 @@ jobs:
       run: |
         image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
         manifest_json=$(docker manifest inspect $image_origin_name)
-        platforms=$(echo $manifest_json | jq -r '.manifests[].platform | "\(.architecture)/\(.os)"' | paste -sd "," -)
+        platforms=$(echo $manifest_json | jq -r '.manifests[].platform | "\(.os)/\(.architecture)"' | paste -sd "," -)
         echo "Platforms: $platforms"
         echo "platforms=$platforms" >> $GITHUB_OUTPUT
         
