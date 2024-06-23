@@ -119,7 +119,7 @@ jobs:
 
         docker pull $image_origin_name
         docker buildx build --platform $platforms --push \
-          --tag "$transfer_image_name" "$image_origin_name"
+          --tag "$transfer_image_name" docker://$image_origin_name
 
 #    - name: Build and push image Aliyun
 #      run: |
