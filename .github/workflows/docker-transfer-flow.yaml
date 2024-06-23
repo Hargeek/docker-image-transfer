@@ -122,6 +122,7 @@ jobs:
           platform_suffix=$(echo $platform | tr "/" "-")
           docker tag $image_origin_name $transfer_image_name-$platform_suffix
         done
+        docker images
         docker manifest create $transfer_image_name $(
           for platform in $(echo $platforms | tr "," "\n")
           do
