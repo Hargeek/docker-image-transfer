@@ -104,7 +104,6 @@ jobs:
       run: |
         image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
         manifest_json=$(docker manifest inspect $image_origin_name)
-        echo "Manifest: $manifest_json"
         platforms=$(echo $manifest_json | jq -r '.manifests[].platform | "\(.architecture)/\(.os)"' | paste -sd "," -)
         echo "Platforms: $platforms"
         echo "platforms=$platforms" >> $GITHUB_OUTPUT
@@ -117,9 +116,7 @@ jobs:
         
         echo "$ALIYUN_REGISTRY_PASSWORD" | docker login -u $ALIYUN_REGISTRY_USER --password-stdin $ALIYUN_REGISTRY
 
-        docker pull $image_origin_name
-        docker buildx build --platform $platforms --push \
-          --tag "$transfer_image_name" docker://$image_origin_name
+        docker buildx build --platform $platforms --push --tag $transfer_image_name docker://$image_origin_name
 
 #    - name: Build and push image Aliyun
 #      run: |
