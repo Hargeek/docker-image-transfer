@@ -91,14 +91,15 @@ jobs:
         echo "Transfer Image Name: $transfer_image_name"
         
         # set output
-        echo "::set-output name=image_origin_name::$image_origin_name"
-        echo "::set-output name=transfer_image_name::$transfer_image_name"
+        echo "image_origin_name=${image_origin_name}" >> $GITHUB_OUTPUT
+        echo "transfer_image_name=${transfer_image_name}" >> $GITHUB_OUTPUT
+        
         
     - name: Retag And Push Image
       run: |
-        image_origin_name = "${{ steps.parse_image.outputs.image_origin_name }}"
-        transfer_image_name = "${{ steps.parse_image.outputs.transfer_image_name }}"
-        
+        image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
+        transfer_image_name="${{ steps.parse_image.outputs.transfer_image_name }}"
+    
         docker pull "$image_origin_name"
         docker tag "$image_origin_name" "$transfer_image_name"
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
