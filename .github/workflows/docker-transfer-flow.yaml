@@ -70,10 +70,7 @@ jobs:
     - name: Transfer Docker Image To ACR With Issue Comment
       run: |
         image_origin_name=$(echo "${{ github.event.comment.body }}")
-        echo "Image Origin Name: $image_origin_name"
-        
-        docker pull "$image_origin_name"
-        
+        echo "Image Origin Name: $image_origin_name"        
         # get image name and tag
         image_name_tag=$(echo "$image_origin_name" | awk -F'/' '{
             if (NF == 1) {
@@ -92,6 +89,8 @@ jobs:
         transfer_image_name="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$image_name_tag"
         echo "Transfer Image Name: $transfer_image_name"
         
+        docker pull "$image_origin_name"
+
 
 #        docker tag $image_origin_name $ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$(echo $IMAGE_ADDRESS | awk -F '/' '{print $NF}')
 
