@@ -61,8 +61,8 @@ jobs:
         df -hT
         echo "=============================================================================="
 
-    - name: Checkout Code
-      uses: actions/checkout@v4
+#    - name: Checkout Code
+#      uses: actions/checkout@v4
 
     - name: Docker Setup Buildx
       uses: docker/setup-buildx-action@v3
@@ -114,7 +114,8 @@ jobs:
         image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
         transfer_image_name="${{ steps.parse_image.outputs.transfer_image_name }}"
         platforms="${{ steps.manifest.outputs.platforms }}"
-      
+        
+        docker pull $image_origin_name
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
         docker buildx build --platform $platforms --push \
           --tag "$transfer_image_name" "$image_origin_name"
