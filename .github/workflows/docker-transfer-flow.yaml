@@ -67,6 +67,11 @@ jobs:
     - name: Docker Setup Buildx
       uses: docker/setup-buildx-action@v3
 
+    - name: Create Buildx Builder
+      run: |
+        apt-get install -y jq
+        docker buildx create --name mybuilder --use
+
     - name: Parse Image Name From Issue Comment
       id: parse_image
       run: |
@@ -93,18 +98,26 @@ jobs:
         # set output
         echo "image_origin_name=${image_origin_name}" >> $GITHUB_OUTPUT
         echo "transfer_image_name=${transfer_image_name}" >> $GITHUB_OUTPUT
-        
+
+    - name: Retrieve Image Manifest
+      id: manifest
+      run: |
+        image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
+        manifest_json=$(docker manifest inspect $image_origin_name)
+        echo "Manifest: $manifest_json"
+        platforms=$(echo $manifest_json | jq -r '.manifests[].platform | "\(.architecture)/\(.os)"' | paste -sd "," -)
+        echo "Platforms: $platforms"
+        echo "platforms=$platforms" >> $GITHUB_OUTPUT
         
     - name: Retag And Push Image
       run: |
         image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
         transfer_image_name="${{ steps.parse_image.outputs.transfer_image_name }}"
-    
-        docker pull "$image_origin_name"
-        docker tag "$image_origin_name" "$transfer_image_name"
+        platforms="${{ steps.manifest.outputs.platforms }}"
+      
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
-        docker push "$transfer_image_name"
-        
+        docker buildx build --platform $platforms --push \
+          --tag "$transfer_image_name" "$image_origin_name"
 
 #    - name: Build and push image Aliyun
 #      run: |
