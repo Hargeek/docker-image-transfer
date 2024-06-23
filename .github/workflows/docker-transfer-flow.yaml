@@ -69,7 +69,7 @@ jobs:
 
     - name: Create Buildx Builder
       run: |
-        apt-get install -y jq
+        sudo apt-get install -y jq
         docker buildx create --name mybuilder --use
 
     - name: Parse Image Name From Issue Comment
