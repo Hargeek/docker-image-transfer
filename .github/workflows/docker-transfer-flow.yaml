@@ -100,9 +100,9 @@ jobs:
         transfer_image_name = "${{ steps.parse_image.outputs.transfer_image_name }}"
         
         docker pull "$image_origin_name"
-        docker tag $image_origin_name $transfer_image_name
+        docker tag "$image_origin_name" "$transfer_image_name"
         docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
-        docker push $transfer_image_name
+        docker push "$transfer_image_name"
         
 
 #    - name: Build and push image Aliyun
