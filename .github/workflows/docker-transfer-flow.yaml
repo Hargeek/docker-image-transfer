@@ -119,12 +119,14 @@ jobs:
         for platform in $(echo $platforms | tr "," "\n")
         do
           docker pull $image_origin_name --platform $platform
-          docker tag $image_origin_name $transfer_image_name-$platform
+          platform_suffix=$(echo $platform | tr "/" "-")
+          docker tag $image_origin_name $transfer_image_name-$platform_suffix
         done
         docker manifest create $transfer_image_name $(
           for platform in $(echo $platforms | tr "," "\n")
           do
-            echo $transfer_image_name-$platform
+            platform_suffix=$(echo $platform | tr "/" "-")
+            echo $transfer_image_name-$platform_suffix
           done
         )
         docker manifest push $transfer_image_name
