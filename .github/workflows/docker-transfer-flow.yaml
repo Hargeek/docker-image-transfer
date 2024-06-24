@@ -27,7 +27,7 @@ jobs:
 
   docker-image-transfer:
     if: >
-      github.event.issue.pull_request == null && github.event.issue.title == 'Docker Image Transfer' && github.event.issue.number == 4
+      github.event.issue.pull_request == null && github.event.issue.title == 'Docker Image Transfer'
     runs-on: ubuntu-latest
     steps:
 #    - name: Before freeing up disk space
