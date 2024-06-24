@@ -17,13 +17,13 @@ env:
   ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
 jobs:
-#  echo-issue:
-#    runs-on: ubuntu-latest
-#    steps:
-#    - name: Install jq
-#      run: sudo apt-get install jq
-#    - name: Echo Issue
-#      run: echo '${{ toJson(github.event.issue) }}' | jq
+  echo-issue:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install jq
+      run: sudo apt-get install jq
+    - name: Echo Issue
+      run: echo '${{ toJson(github.event.issue) }}' | jq
 
   docker-image-transfer:
     if: >
