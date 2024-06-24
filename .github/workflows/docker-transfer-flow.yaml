@@ -72,15 +72,10 @@ jobs:
 #        sudo apt-get install -y jq skopeo
 #        docker buildx create --name mybuilder --use
 
-    - name: Parse Image Name From Issue Comment
+    - name: Parse Image Name From Issue
       id: parse_image
       run: |
-        if ( "${{ github.event_name }}" != "issue_opened" ); then
-            image_origin_name=$(echo "${{ github.event.issue.body }}")
-        else if ( "${{ github.event_name }}" != "issue_comment" ); then
-            image_origin_name=$(echo "${{ github.event.comment.body }}")
-        fi
-        
+        image_origin_name=$(echo "${{ github.event.comment.body }}")
         echo "Image Origin Name: $image_origin_name"
         # get image name and tag
         image_name_tag=$(echo "$image_origin_name" | awk -F'/' '{
