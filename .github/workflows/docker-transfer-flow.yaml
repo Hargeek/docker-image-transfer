@@ -75,8 +75,13 @@ jobs:
     - name: Parse Image Name From Issue Comment
       id: parse_image
       run: |
-        image_origin_name=$(echo "${{ github.event.comment.body }}")
-        echo "Image Origin Name: $image_origin_name"        
+        if ( "${{ github.event_name }}" != "issue_opened" ); then
+            image_origin_name=$(echo "${{ github.event.issue.body }}")
+        else if ( "${{ github.event_name }}" != "issue_comment" ); then
+            image_origin_name=$(echo "${{ github.event.comment.body }}")
+        fi
+        
+        echo "Image Origin Name: $image_origin_name"
         # get image name and tag
         image_name_tag=$(echo "$image_origin_name" | awk -F'/' '{
             if (NF == 1) {
