@@ -75,10 +75,10 @@ jobs:
     - name: Parse Image Name From Issue
       id: parse_image
       run: |
-        if [[ -n "${{ github.event.issue.body }}" ]]; then
-            image_origin_name="${{ github.event.issue.body }}"
-        elif [[ -n "${{ github.event.comment.body }}" ]]; then
+        if [[ -n "${{ github.event.comment.body }}" ]]; then
             image_origin_name="${{ github.event.comment.body }}"
+        elif [[ -n "${{ github.event.issue.body }}" ]]; then
+            image_origin_name="${{ github.event.issue.body }}"
         else
             echo "No issue body or comment body found."
             exit 1
