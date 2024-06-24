@@ -17,13 +17,13 @@ env:
   ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
 jobs:
-  echo-issue:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Install jq
-      run: sudo apt-get install jq
-    - name: Echo Issue
-      run: echo '${{ toJson(github.event) }}' | jq
+#  echo-issue:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - name: Install jq
+#      run: sudo apt-get install jq
+#    - name: Echo Issue
+#      run: echo '${{ toJson(github.event) }}' | jq
 
   docker-image-transfer:
     if: >
@@ -75,7 +75,15 @@ jobs:
     - name: Parse Image Name From Issue
       id: parse_image
       run: |
-        image_origin_name=$(echo "${{ github.event.comment.body }}")
+        if [[ -n "${{ github.event.issue.body }}" ]]; then
+            image_origin_name="${{ github.event.issue.body }}"
+        elif [[ -n "${{ github.event.comment.body }}" ]]; then
+            image_origin_name="${{ github.event.comment.body }}"
+        else
+            echo "No issue body or comment body found."
+            exit 1
+        fi
+        
         echo "Image Origin Name: $image_origin_name"
         # get image name and tag
         image_name_tag=$(echo "$image_origin_name" | awk -F'/' '{
