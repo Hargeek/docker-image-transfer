@@ -1,4 +1,4 @@
-name: Docker Transfer
+name: Docker Image Transfer
 
 on:
   #  workflow_dispatch:
@@ -17,60 +17,60 @@ env:
   ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
 jobs:
-  #  echo-issue:
-  #    runs-on: ubuntu-latest
-  #    steps:
-  #    - name: Install jq
-  #      run: sudo apt-get install jq
-  #    - name: Echo Issue
-  #      run: echo '${{ toJson(github.event.issue) }}' | jq
-
-  docker-transfer-flow:
-    if: >
-      github.event.issue.pull_request == null && github.event.issue.title == 'Docker Transfer Image' && github.event.issue.number == 3
+  echo-issue:
     runs-on: ubuntu-latest
     steps:
-    - name: Before freeing up disk space
-      run: |
-        echo "Before freeing up disk space"
-        echo "=============================================================================="
-        df -hT
-        echo "=============================================================================="
+    - name: Install jq
+      run: sudo apt-get install jq
+    - name: Echo Issue
+      run: echo '${{ toJson(github.event.issue) }}' | jq
 
-    # 增加可用磁盘空间
-    - name: Maximize build space
-      uses: easimon/maximize-build-space@master
-      with:
+  docker-image-transfer:
+    if: >
+      github.event.issue.pull_request == null && github.event.issue.title == 'Docker Image Transfer' && github.event.issue.number == 3
+    runs-on: ubuntu-latest
+    steps:
+#    - name: Before freeing up disk space
+#      run: |
+#        echo "Before freeing up disk space"
+#        echo "=============================================================================="
+#        df -hT
+#        echo "=============================================================================="
 
-        root-reserve-mb: 2048
-        swap-size-mb: 128
-        remove-dotnet: 'true'
-        remove-haskell: 'true'
-        # 如果空间还是不够用，可以把以下开启，清理出更多空间
-        # remove-android: 'true'
-        # remove-codeql: 'true'
-        build-mount-path: '/var/lib/docker/'
+#    # 增加可用磁盘空间
+#    - name: Maximize build space
+#      uses: easimon/maximize-build-space@master
+#      with:
+#
+#        root-reserve-mb: 2048
+#        swap-size-mb: 128
+#        remove-dotnet: 'true'
+#        remove-haskell: 'true'
+#        # 如果空间还是不够用，可以把以下开启，清理出更多空间
+#        # remove-android: 'true'
+#        # remove-codeql: 'true'
+#        build-mount-path: '/var/lib/docker/'
 
-    - name: Restart docker
-      run: sudo service docker restart
+#    - name: Restart docker
+#      run: sudo service docker restart
 
-    - name: Free up disk space complete
-      run: |
-        echo "Free up disk space complete"
-        echo "=============================================================================="
-        df -hT
-        echo "=============================================================================="
+#    - name: Free up disk space complete
+#      run: |
+#        echo "Free up disk space complete"
+#        echo "=============================================================================="
+#        df -hT
+#        echo "=============================================================================="
 
-    #    - name: Checkout Code
-    #      uses: actions/checkout@v4
+#    - name: Checkout Code
+#      uses: actions/checkout@v4
 
-    - name: Docker Setup Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Create Buildx Builder
-      run: |
-        sudo apt-get install -y jq skopeo
-        docker buildx create --name mybuilder --use
+#    - name: Docker Setup Buildx
+#      uses: docker/setup-buildx-action@v3
+#
+#    - name: Create Buildx Builder
+#      run: |
+#        sudo apt-get install -y jq skopeo
+#        docker buildx create --name mybuilder --use
 
     - name: Parse Image Name From Issue Comment
       id: parse_image
@@ -105,33 +105,32 @@ jobs:
         transfer_image_name="${{ steps.parse_image.outputs.transfer_image_name }}"
         echo "$ALIYUN_REGISTRY_PASSWORD" | skopeo copy --dest-creds $ALIYUN_REGISTRY_USER:$ALIYUN_REGISTRY_PASSWORD --all docker://$image_origin_name docker://$transfer_image_name
 
-    - name: Retrieve Image Manifest
-      id: manifest
-      run: |
-        image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
-        manifest_json=$(docker manifest inspect $image_origin_name)
-        platforms=$(echo $manifest_json | jq -r '.manifests[].platform | "\(.os)/\(.architecture)"' | paste -sd "," -)
-        echo "Platforms: $platforms"
-        echo "platforms=$platforms" >> $GITHUB_OUTPUT
-
-    - name: Retag And Push Image
-      run: |
-        image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
-        transfer_image_name="${{ steps.parse_image.outputs.transfer_image_name }}"
-        platforms="${{ steps.manifest.outputs.platforms }}"
-        
-        echo "$ALIYUN_REGISTRY_PASSWORD" | docker login -u $ALIYUN_REGISTRY_USER --password-stdin $ALIYUN_REGISTRY
-
-        image_tags=""
-        # 为每个平台拉取、标记并推送镜像
-        for platform in $(echo $platforms | tr "," "\n")
-        do
-            docker pull --platform $platform $image_origin_name
-            platform_suffix=$(echo $platform | tr "/" "-")
-            transfer_image_tag="${transfer_image_name}-${platform_suffix}"
-            docker tag $image_origin_name $transfer_image_tag
-            docker push $transfer_image_tag
-            image_tags="$image_tags $transfer_image_tag"
-        done
-        docker manifest create $transfer_image_name $image_tags
-        docker manifest push --purge $transfer_image_name
+#    - name: Retrieve Image Manifest
+#      id: manifest
+#      run: |
+#        image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
+#        manifest_json=$(docker manifest inspect $image_origin_name)
+#        platforms=$(echo $manifest_json | jq -r '.manifests[].platform | "\(.os)/\(.architecture)"' | paste -sd "," -)
+#        echo "Platforms: $platforms"
+#        echo "platforms=$platforms" >> $GITHUB_OUTPUT
+#
+#    - name: Retag And Push Image
+#      run: |
+#        image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
+#        transfer_image_name="${{ steps.parse_image.outputs.transfer_image_name }}"
+#        platforms="${{ steps.manifest.outputs.platforms }}"
+#
+#        echo "$ALIYUN_REGISTRY_PASSWORD" | docker login -u $ALIYUN_REGISTRY_USER --password-stdin $ALIYUN_REGISTRY
+#
+#        image_tags=""
+#        for platform in $(echo $platforms | tr "," "\n")
+#        do
+#            docker pull --platform $platform $image_origin_name
+#            platform_suffix=$(echo $platform | tr "/" "-")
+#            transfer_image_tag="${transfer_image_name}-${platform_suffix}"
+#            docker tag $image_origin_name $transfer_image_tag
+#            docker push $transfer_image_tag
+#            image_tags="$image_tags $transfer_image_tag"
+#        done
+#        docker manifest create $transfer_image_name $image_tags
+#        docker manifest push --purge $transfer_image_name
