@@ -23,7 +23,7 @@ jobs:
     - name: Install jq
       run: sudo apt-get install jq
     - name: Echo Issue
-      run: echo '${{ toJson(github.event.issue) }}' | jq
+      run: echo '${{ toJson(github.event) }}' | jq
 
   docker-image-transfer:
     if: >
