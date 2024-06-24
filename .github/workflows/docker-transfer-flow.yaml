@@ -17,17 +17,17 @@ env:
   ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
 
 jobs:
-  echo-issue:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Install jq
-      run: sudo apt-get install jq
-    - name: Echo Issue
-      run: echo '${{ toJson(github.event.issue) }}' | jq
+#  echo-issue:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - name: Install jq
+#      run: sudo apt-get install jq
+#    - name: Echo Issue
+#      run: echo '${{ toJson(github.event.issue) }}' | jq
 
   docker-image-transfer:
     if: >
-      github.event.issue.pull_request == null && github.event.issue.title == 'Docker Image Transfer' && github.event.issue.number == 3
+      github.event.issue.pull_request == null && github.event.issue.title == 'Docker Image Transfer' && github.event.issue.number == 4
     runs-on: ubuntu-latest
     steps:
 #    - name: Before freeing up disk space
@@ -101,6 +101,8 @@ jobs:
 
     - name: Transfer Image With Skopeo
       run: |
+        sudo apt-get install -y skopeo
+        
         image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
         transfer_image_name="${{ steps.parse_image.outputs.transfer_image_name }}"
         echo "$ALIYUN_REGISTRY_PASSWORD" | skopeo copy --dest-creds $ALIYUN_REGISTRY_USER:$ALIYUN_REGISTRY_PASSWORD --all docker://$image_origin_name docker://$transfer_image_name
