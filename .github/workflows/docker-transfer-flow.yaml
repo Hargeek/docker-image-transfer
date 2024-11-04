@@ -109,11 +109,12 @@ jobs:
 
     - name: Transfer Image With Skopeo
       run: |
+        sudo apt-get -y update
         sudo apt-get install -y skopeo
-        
         image_origin_name="${{ steps.parse_image.outputs.image_origin_name }}"
         transfer_image_name="${{ steps.parse_image.outputs.transfer_image_name }}"
-        echo "$ALIYUN_REGISTRY_PASSWORD" | skopeo copy --format v2s2 --dest-creds $ALIYUN_REGISTRY_USER:$ALIYUN_REGISTRY_PASSWORD --all docker://$image_origin_name docker://$transfer_image_name
+        echo "$ALIYUN_REGISTRY_PASSWORD" | skopeo copy --dest-creds $ALIYUN_REGISTRY_USER:$ALIYUN_REGISTRY_PASSWORD --all docker://$image_origin_name docker://$transfer_image_name
+#        echo "$ALIYUN_REGISTRY_PASSWORD" | skopeo copy --format v2s2 --dest-creds $ALIYUN_REGISTRY_USER:$ALIYUN_REGISTRY_PASSWORD --all docker://$image_origin_name docker://$transfer_image_name
 # --format v2s2 将镜像的 manifest 转换成 Docker 支持的格式
 #    - name: Retrieve Image Manifest
 #      id: manifest
